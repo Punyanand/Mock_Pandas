@@ -1,0 +1,7 @@
+import pandas as pd
+
+def biggest_single_number(my_numbers: pd.DataFrame) -> pd.DataFrame:
+     count_series = my_numbers['num'].value_counts() #counting occurence of each mumber
+     single_numbers = count_series[count_series == 1].index #getting numbers only having count as one
+     max_single = max(single_numbers, default=None) #getting the max number of the above series
+     return pd.DataFrame({'num': [max_single]})
