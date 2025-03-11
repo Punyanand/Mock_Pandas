@@ -1,0 +1,21 @@
+import pandas as pd
+
+def sales_analysis(product: pd.DataFrame, sales: pd.DataFrame) -> pd.DataFrame:
+    # Convert 'sale_date' to datetime
+    sales['sale_date'] = pd.to_datetime(sales['sale_date'])
+    
+    # Perform the join between Product and Sales on 'product_id'
+    merged_df = pd.merge(sales, product, on='product_id', how='inner')
+    
+    # Group by 'product_id' and calculate the min and max sale_date
+    grouped = merged_df.groupby('product_id').agg(
+        min_sale_date=('sale_date', 'min'),
+        max_sale_date=('sale_date', 'max'),
+        product_name=('product_name', 'first')  # Get product_name for each product_id
+    ).reset_index()  # Reset index to bring 'product_id' back to columns
+    
+    # Filter for first quarter
+    result = grouped[(grouped['min_sale_date'] >= '2019-01-01') & (grouped['max_sale_date'] <= '2019-03-31')]
+    
+    # Return 
+    return result[['product_id', 'product_name']]
