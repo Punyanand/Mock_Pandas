@@ -1,0 +1,11 @@
+import pandas as pd
+
+def not_boring_movies(cinema: pd.DataFrame) -> pd.DataFrame:
+
+    #odd-numbered
+    #description - boring
+    #result in desc order
+
+    df = cinema[(cinema['id']%2 !=0) & (cinema['description'] != 'boring' )]
+    print(df)
+    return df.sort_values('rating',ascending=False)
